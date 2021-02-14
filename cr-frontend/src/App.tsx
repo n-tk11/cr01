@@ -1,31 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { render } from '@testing-library/react';
+const App = () => {
+  const [message,setMessage] = useState('My message');
 
-type Appstate = {
-  message: string;
-};
-
-class App extends React.Component<{}, Appstate> {
-  state: Appstate  = {
-    message: 'Default message', 
-  };
-  
-  componentDidMount(){
+  useEffect(() => {
     fetch('http://localhost:3000/courses')
       .then(res => res.json())
       .then(obj => {
-        this.setState({message: obj.message});
+        setMessage(obj.message);
       });
-  }
+  },[]);
 
-  render() {
-    return (
-      <div>
-        {this.state.message}
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      {message}
+    </div>
+  )
 }
+
 export default App;
